@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - 8080:80
+    depends_on:
+      - api
+  api:
+    build:
+      context: .
+    depends_on:
+      - postgres
+      - migrations
+    volumes:
+      - ./.docker_env:/app/.env
+  migrations:
+    build:
+      context: .
+    depends_on:
+      - postgres
+    volumes:
+      - ./.docker_env:/app/.env
+    command: python manage.py migrate
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
