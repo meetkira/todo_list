@@ -8,16 +8,14 @@ services:
     depends_on:
       - api
   api:
-    build:
-      context: .
+    image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       - postgres
       - migrations
     volumes:
       - ./.docker_env:/app/.env
   migrations:
-    build:
-      context: .
+    image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       - postgres
     volumes:
@@ -26,13 +24,15 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    ports:
+      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./pg_data:/var/lib/postgresql/data
