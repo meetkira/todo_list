@@ -14,12 +14,27 @@ services:
       - migrations
     volumes:
       - ./.docker_env:/app/.env
+    links:
+      - postgres
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_HOST: $POSTGRES_HOST
+      SECRET_KEY: $SECRET_KEY
   migrations:
     image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       - postgres
     volumes:
       - ./.docker_env:/app/.env
+    links:
+      - postgres
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_HOST: $POSTGRES_HOST
     command: python manage.py migrate
   postgres:
     image: postgres:latest
@@ -27,6 +42,7 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_HOST: $POSTGRES_HOST
     ports:
       - "5432:5432"
     healthcheck:
