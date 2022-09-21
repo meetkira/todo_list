@@ -9,6 +9,8 @@ services:
       - api
   api:
     image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    ports:
+      - 8000:8000
     depends_on:
       - postgres
       - migrations
