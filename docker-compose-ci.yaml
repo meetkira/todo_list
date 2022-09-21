@@ -14,8 +14,6 @@ services:
       - migrations
     ports:
       - 8000:8000
-    volumes:
-      - ./.docker_env:/app/.env
     links:
       - postgres
     environment:
