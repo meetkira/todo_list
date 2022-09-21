@@ -28,8 +28,6 @@ services:
     image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       - postgres
-    volumes:
-      - ./.docker_env:/app/.env
     links:
       - postgres
     environment:
