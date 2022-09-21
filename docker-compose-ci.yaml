@@ -12,6 +12,8 @@ services:
     depends_on:
       - postgres
       - migrations
+    ports:
+      - 8000:8000
     volumes:
       - ./.docker_env:/app/.env
     links:
