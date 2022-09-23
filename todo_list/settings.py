@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     "rest_framework",
     'social_django',
     'phonenumber_field',
+    'django_filters',
     'core',
+    'goals',
     'drf_spectacular',
 ]
 
@@ -79,6 +81,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
 }
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

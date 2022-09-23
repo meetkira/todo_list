@@ -22,3 +22,7 @@ class UserStatus:
 class User(AbstractUser):
     phone = PhoneNumberField(null=True, blank=True, unique=True)
     user_status = models.CharField(max_length=5, default=UserStatus.USER, choices=get_choices(UserStatus))
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"

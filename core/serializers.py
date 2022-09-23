@@ -59,7 +59,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         return instance
 
 
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
