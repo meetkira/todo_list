@@ -23,6 +23,8 @@ services:
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_HOST: $POSTGRES_HOST
       SECRET_KEY: $SECRET_KEY
+      SOCIAL_AUTH_VK_OAUTH2_KEY: $SOCIAL_AUTH_VK_OAUTH2_KEY
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: $SOCIAL_AUTH_VK_OAUTH2_SECRET
   migrations:
     image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
