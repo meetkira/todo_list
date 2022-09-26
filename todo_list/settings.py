@@ -28,7 +28,7 @@ DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 # Application definition
-SESSION_COOKIE_HTTPONLY = False
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -161,7 +161,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/logged-in/"
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-
+SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_NAME = "sessionid"
 SESSION_COOKIE_PATH = "/"
 SESSION_COOKIE_SECURE = False
