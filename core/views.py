@@ -1,4 +1,5 @@
 from django.contrib.auth import logout, login
+from django.http import HttpResponse
 
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, \
     GenericAPIView
@@ -26,6 +27,10 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         logout(request)
+        try:
+            del request.session['is_login']
+        except KeyError:
+            pass
         return Response({})
 
 
@@ -43,9 +48,11 @@ class LoginView(GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer: LoginSerializer = self.get_serializer(data=request.data)
+        serializer: LoginSerializer = self.get_serializer(data=request.data, context={ 'request': self.request })
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
+        request.session['is_login'] = 'true'
+        request.session['username'] = user.username
         login(request, user=user)
         user_serializer = ProfileSerializer(instance=user)
         return Response(user_serializer.data)
