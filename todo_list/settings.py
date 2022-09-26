@@ -28,7 +28,7 @@ DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 # Application definition
-
+SESSION_COOKIE_HTTPONLY = False
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -78,6 +78,10 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
 }
 # Database
@@ -155,3 +159,12 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_VK_OAUTH2_SECRET")
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "notify"]
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/logged-in/"
 SOCIAL_AUTH_LOGIN_ERROR_URL = "/login-error/"
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_COOKIE_PATH = "/"
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_AGE = 1209600
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = False

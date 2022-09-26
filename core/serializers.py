@@ -37,6 +37,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
+
+
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128, write_only=True)
     new_password = serializers.CharField(max_length=128, write_only=True)
@@ -59,7 +61,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         return instance
 
 
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
@@ -67,7 +68,7 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, attrs):
         username = attrs.get("username")
         password = attrs.get("password")
-        user = authenticate(username=username, password=password)
+        user = authenticate(request = self.context.get('request'),username=username, password=password)
         if not user:
             raise serializers.ValidationError({"login error": "Incorrect login or password"})
         attrs["user"] = user
