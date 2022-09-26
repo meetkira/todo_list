@@ -55,4 +55,6 @@ class LoginView(GenericAPIView):
         request.session['username'] = user.username
         login(request, user=user)
         user_serializer = ProfileSerializer(instance=user)
-        return Response(user_serializer.data)
+        response = Response(user_serializer.data)
+        response.set_cookie(key="sessionid", value=request.session.session_key)
+        return response
