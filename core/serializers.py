@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
 
 from core.models import User
 
@@ -37,8 +38,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128, write_only=True)
     new_password = serializers.CharField(max_length=128, write_only=True)
@@ -61,15 +60,19 @@ class ChangePasswordSerializer(serializers.Serializer):
         return instance
 
 
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(write_only=True)
-    password = serializers.CharField(write_only=True)
+class LoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
 
-    def validate(self, attrs):
-        username = attrs.get("username")
-        password = attrs.get("password")
-        user = authenticate(request = self.context.get('request'),username=username, password=password)
-        if not user:
-            raise serializers.ValidationError({"login error": "Incorrect login or password"})
-        attrs["user"] = user
-        return attrs
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'first_name', 'last_name', 'email',)
+        read_only_fields = ('first_name', 'last_name', 'email',)
+
+    def create(self, validated_data):
+        if not (user := authenticate(
+                username=validated_data['username'],
+                password=validated_data['password'],
+        )):
+            raise AuthenticationFailed
+        return user

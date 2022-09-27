@@ -27,10 +27,6 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         logout(request)
-        try:
-            del request.session['is_login']
-        except KeyError:
-            pass
         return Response({})
 
 
@@ -46,13 +42,10 @@ class ChangePasswordView(UpdateAPIView):
 
 class LoginView(GenericAPIView):
     serializer_class = LoginSerializer
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        serializer: LoginSerializer = self.get_serializer(data=request.data, context={ 'request': self.request })
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data["user"]
-        request.session['is_login'] = 'true'
-        request.session['username'] = user.username
-        login(request, user=user)
-        user_serializer = ProfileSerializer(instance=user)
-        return Response(user_serializer.data)
+        login(request=request, user=serializer.save())
+        return Response(serializer.data)
