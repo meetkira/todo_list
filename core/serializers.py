@@ -38,8 +38,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128, write_only=True)
     new_password = serializers.CharField(max_length=128, write_only=True)
@@ -64,17 +62,17 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
 
     class Meta:
         model = User
         fields = ('username', 'password', 'first_name', 'last_name', 'email',)
-        read_only_fields = ('first_name', 'last_name', 'email', )
+        read_only_fields = ('first_name', 'last_name', 'email',)
 
     def create(self, validated_data):
         if not (user := authenticate(
-            username=validated_data['username'],
-            password=validated_data['password'],
+                username=validated_data['username'],
+                password=validated_data['password'],
         )):
             raise AuthenticationFailed
         return user
