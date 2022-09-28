@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from core.models import User
 
+
 class DatesModelMixin(models.Model):
     class Meta:
         abstract = True
@@ -16,6 +17,7 @@ class DatesModelMixin(models.Model):
         self.updated = timezone.now()
         return super().save(*args, **kwargs)
 
+
 class GoalCategory(DatesModelMixin):
     class Meta:
         verbose_name = "Категория"
@@ -24,6 +26,9 @@ class GoalCategory(DatesModelMixin):
     title = models.CharField(verbose_name="Название", max_length=255)
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
+
+    def __str__(self):
+        return self.title
 
 
 class Status(models.IntegerChoices):
@@ -58,6 +63,10 @@ class Goal(DatesModelMixin):
     due_date = models.DateField(verbose_name="Дедлайн")
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
 
+    def __str__(self):
+        return self.title
+
+
 class GoalComment(DatesModelMixin):
     class Meta:
         verbose_name = "Комментарий"
@@ -66,3 +75,6 @@ class GoalComment(DatesModelMixin):
     text = models.CharField(verbose_name="Текст комментария", max_length=500)
     goal = models.ForeignKey(Goal, verbose_name="Цель", on_delete=models.PROTECT)
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.text

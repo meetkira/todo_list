@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from core.serializers import ProfileSerializer
-from goals.models import GoalCategory, Goal
+from goals.models import GoalCategory, Goal, GoalComment
 
 
 # GoalCategory -----------------
@@ -26,12 +26,6 @@ class GoalCategorySerializer(serializers.ModelSerializer):
 # Goal -----------------
 class GoalCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    category = GoalCategory()
-    '''category = serializers.SlugRelatedField(
-            required=False,
-            queryset=GoalCategory.objects.filter(user=self.request.user, is_deleted=False),
-            slug_field='id'
-        )'''
 
     def validate_category(self, value):
         if value.is_deleted:
@@ -50,12 +44,11 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
 class GoalSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
-    category = GoalCategorySerializer() # можно редачить
-    '''category = serializers.SlugRelatedField(
+    category = serializers.SlugRelatedField(
         required=False,
         queryset=GoalCategory.objects.all(),
         slug_field='id'
-    )'''
+    )
 
     class Meta:
         model = Goal
@@ -66,12 +59,15 @@ class GoalSerializer(serializers.ModelSerializer):
 # GoalComment -----------------
 class GoalCommentCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    goal = serializers.HiddenField(default=GoalSerializer()) #??
+    goal = serializers.SlugRelatedField(
+        required=True,
+        queryset=Goal.objects.all(),
+        slug_field='id'
+    )
 
-    # goal ??
     class Meta:
-        model = GoalCategory
-        read_only_fields = ("id", "created", "updated", "user", "goal")
+        model = GoalComment
+        read_only_fields = ("id", "created", "updated", "user",)
         fields = "__all__"
 
 
@@ -80,6 +76,6 @@ class GoalCommentSerializer(serializers.ModelSerializer):
     goal = GoalSerializer(read_only=True)
 
     class Meta:
-        model = GoalCategory
+        model = GoalComment
         fields = "__all__"
-        read_only_fields = ("id", "created", "updated", "user", "goal")
+        read_only_fields = ("id", "created", "updated", "user",)
