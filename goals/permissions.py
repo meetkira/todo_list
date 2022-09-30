@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from goals.models import BoardParticipant, GoalCategory
+from goals.models import BoardParticipant, GoalCategory, Goal
 
 
 class BoardPermissions(permissions.BasePermission):
@@ -34,11 +34,14 @@ class GoalPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        query = GoalCategory.objects.get(id=request.data.get("category"))
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        goal_category = GoalCategory.objects.get(id=request.data.get("category"))
         return BoardParticipant.objects.filter(
-            user=request.user, board=query.board,
-            role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
-        ).exists()
+                user=request.user, board=goal_category.board,
+                role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
+            ).exists()
+
 
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
@@ -51,3 +54,23 @@ class GoalPermissions(permissions.BasePermission):
             user=request.user, board=obj.category.board,
             role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
         ).exists()
+
+
+class GoalCommentPermissions(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.data.get("goal"):
+            if isinstance(request.data.get("goal"), int):
+                goal = Goal.objects.get(id=request.data.get("goal"))
+                goal_category = GoalCategory.objects.get(id=goal.category_id)
+            else:
+                goal_category = GoalCategory.objects.get(id=request.data.get("goal")["category"])
+            return BoardParticipant.objects.filter(
+                user=request.user, board=goal_category.board,
+                role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
+            ).exists()
+        return True
