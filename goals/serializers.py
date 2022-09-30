@@ -41,9 +41,6 @@ class GoalCreateSerializer(serializers.ModelSerializer):
         if value.is_deleted:
             raise serializers.ValidationError("not allowed in deleted category")
 
-        '''if value.user != self.context["request"].user:
-            raise serializers.ValidationError("not owner of category")'''
-
         return value
 
     class Meta:
@@ -111,7 +108,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
 
 class BoardParticipantSerializer(serializers.ModelSerializer):
     role = serializers.ChoiceField(
-        required=True, choices=BoardParticipant.Role.choices # fix choices to editable_choices
+        required=True, choices=BoardParticipant.Role.choices  # fix choices to editable_choices
     )
     user = serializers.SlugRelatedField(
         slug_field="username", queryset=User.objects.all()

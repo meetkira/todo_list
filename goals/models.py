@@ -106,7 +106,6 @@ class BoardParticipant(DatesModelMixin):
         writer = 2, "Редактор"
         reader = 3, "Читатель"
 
-
     board = models.ForeignKey(
         Board,
         verbose_name="Доска",
