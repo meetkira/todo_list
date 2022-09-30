@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 from goals.filters import GoalDateFilter, CommentGoalFilter, GoalCommentOrdering, GoalOrdering
 from goals.models import GoalCategory, Goal, GoalComment, Board, Status, BoardParticipant
-from goals.permissions import BoardPermissions, GoalCategoryPermissions
+from goals.permissions import BoardPermissions, GoalCategoryPermissions, GoalPermissions
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardCreateSerializer, BoardSerializer, \
     BoardListSerializer
@@ -77,7 +77,7 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
 # Goal -----------------
 class GoalCreateView(CreateAPIView):
     model = GoalCategory
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, GoalPermissions]
     serializer_class = GoalCreateSerializer
 
 
@@ -104,7 +104,7 @@ class GoalListView(ListAPIView):
 class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, GoalPermissions]
 
     def get_queryset(self):
         return Goal.objects.filter(user=self.request.user, is_deleted=False)
