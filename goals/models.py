@@ -66,7 +66,7 @@ class Goal(DatesModelMixin):
         verbose_name_plural = "Цели"
 
     title = models.CharField(verbose_name="Название", max_length=255)
-    description = models.CharField(verbose_name="Описание", max_length=500)
+    description = models.CharField(verbose_name="Описание", max_length=500, null=True, blank=True)
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     category = models.ForeignKey(GoalCategory, verbose_name="Категории", on_delete=models.PROTECT)
     status = models.PositiveSmallIntegerField(

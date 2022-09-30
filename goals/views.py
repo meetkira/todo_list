@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 
 from goals.filters import GoalDateFilter, CommentGoalFilter, GoalCommentOrdering, GoalOrdering
-from goals.models import GoalCategory, Goal, GoalComment, Board, Status, BoardParticipant
+from goals.models import GoalCategory, Goal, GoalComment, Board, Status
 from goals.permissions import BoardPermissions, GoalCategoryPermissions, GoalPermissions, GoalCommentPermissions
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardCreateSerializer, BoardSerializer, \
@@ -41,10 +41,7 @@ class GoalCategoryListView(ListAPIView):
         query = Board.objects.filter(participants__user=self.request.user)
         if self.request.query_params.get("board"):
             query = Board.objects.filter(id=self.request.query_params.get("board"))
-            return GoalCategory.objects.filter(
-                board__in=query, is_deleted=False
-            )
-        return GoalCategory.objects.filter(is_deleted=False, board__in=query)
+        return GoalCategory.objects.filter(board__in=query, is_deleted=False)
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
