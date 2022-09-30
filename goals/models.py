@@ -17,6 +17,7 @@ class DatesModelMixin(models.Model):
         self.updated = timezone.now()
         return super().save(*args, **kwargs)
 
+
 class Board(DatesModelMixin):
     class Meta:
         verbose_name = "Доска"
@@ -27,6 +28,7 @@ class Board(DatesModelMixin):
 
     def __str__(self):
         return self.title
+
 
 class GoalCategory(DatesModelMixin):
     class Meta:
@@ -93,7 +95,6 @@ class GoalComment(DatesModelMixin):
         return self.text
 
 
-
 class BoardParticipant(DatesModelMixin):
     class Meta:
         unique_together = ("board", "user")
@@ -104,6 +105,7 @@ class BoardParticipant(DatesModelMixin):
         owner = 1, "Владелец"
         writer = 2, "Редактор"
         reader = 3, "Читатель"
+
 
     board = models.ForeignKey(
         Board,
