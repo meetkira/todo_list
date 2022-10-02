@@ -108,7 +108,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
 
 class BoardParticipantSerializer(serializers.ModelSerializer):
     role = serializers.ChoiceField(
-        required=True, choices=BoardParticipant.Role.choices  # fix choices to editable_choices
+        required=True, choices=BoardParticipant.Role.choices
     )
     user = serializers.SlugRelatedField(
         slug_field="username", queryset=User.objects.all()

@@ -20,7 +20,7 @@ from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializ
 # GoalCategory -----------------
 class GoalCategoryCreateView(CreateAPIView):
     model = GoalCategory
-    permission_classes = [IsAuthenticated, GoalCategoryPermissions]
+    permission_classes = [GoalCategoryPermissions]
     serializer_class = GoalCategoryCreateSerializer
 
 
@@ -58,7 +58,7 @@ class GoalCategoryListView(ListAPIView):
 class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     model = GoalCategory
     serializer_class = GoalCategorySerializer
-    permission_classes = [IsAuthenticated, GoalCategoryPermissions]
+    permission_classes = [GoalCategoryPermissions]
 
     def get_queryset(self):
         return GoalCategory.objects.filter(is_deleted=False)
@@ -75,7 +75,7 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
 # Goal -----------------
 class GoalCreateView(CreateAPIView):
     model = GoalCategory
-    permission_classes = [IsAuthenticated, GoalPermissions]
+    permission_classes = [GoalPermissions]
     serializer_class = GoalCreateSerializer
 
 
@@ -100,7 +100,7 @@ class GoalListView(ListAPIView):
 class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [IsAuthenticated, GoalPermissions]
+    permission_classes = [GoalPermissions]
 
     def get_queryset(self):
         return Goal.objects.filter(is_deleted=False)
@@ -115,7 +115,7 @@ class GoalView(RetrieveUpdateDestroyAPIView):
 # GoalComment -----------------
 class GoalCommentCreateView(CreateAPIView):
     model = GoalComment
-    permission_classes = [IsAuthenticated, GoalCommentPermissions]
+    permission_classes = [GoalCommentPermissions]
     serializer_class = GoalCommentCreateSerializer
 
 
@@ -138,7 +138,7 @@ class GoalCommentListView(ListAPIView):
 class GoalCommentView(RetrieveUpdateDestroyAPIView):
     model = GoalComment
     serializer_class = GoalCommentSerializer
-    permission_classes = [IsAuthenticated, GoalCommentPermissions]
+    permission_classes = [GoalCommentPermissions]
 
     def get_queryset(self):
         return GoalComment.objects.all()
@@ -179,7 +179,7 @@ class BoardListView(ListAPIView):
 
 class BoardView(RetrieveUpdateDestroyAPIView):
     model = Board
-    permission_classes = [IsAuthenticated, BoardPermissions]
+    permission_classes = [BoardPermissions]
     serializer_class = BoardSerializer
 
     def get_queryset(self):
