@@ -21,6 +21,15 @@ services:
     links:
       - postgres
     env_file: .env
+  bot:
+    build:
+      context: .
+    depends_on:
+      - postgres
+      - migrations
+    volumes:
+      - ./.docker_env:/app/.env
+    command: python manage.py runbot
   migrations:
     build:
       context: .

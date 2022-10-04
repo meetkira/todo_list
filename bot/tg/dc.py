@@ -24,7 +24,6 @@ class MessageFrom:
     is_bot: bool
     first_name: str
     username: str
-    language_code: Optional[str] = None
     last_name: Optional[str] = None
 
     class Meta:
@@ -37,7 +36,6 @@ class Message:
     from_: MessageFrom
     chat: Chat
     text: str
-    date: int
 
     class Meta:
         unknown = marshmallow.EXCLUDE

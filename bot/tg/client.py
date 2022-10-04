@@ -1,4 +1,6 @@
 import json
+import random
+import string
 
 import requests
 
@@ -8,6 +10,9 @@ from bot.tg.dc import GetUpdatesResponse, SendMessageResponse, GetUpdatesRespons
 class TgClient:
     def __init__(self, token):
         self.token = token
+
+    def new_verification_code(self):
+        self.verification_code = "".join(random.choices(string.ascii_letters+string.digits, k=50))
 
     def get_url(self, method: str):
         return f"https://api.telegram.org/bot{self.token}/{method}"
@@ -37,7 +42,7 @@ class TgClient:
             raise NotImplementedError
 
 
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     cl = TgClient("5630137267:AAEAa-1q952vsPtg_qneW41QJ0QYVIcbGmw")
     print(cl.get_updates(offset=0, timeout=60))
-    print(cl.send_message(818206966, "hello"))
+    print(cl.send_message(818206966, "hello"))'''
