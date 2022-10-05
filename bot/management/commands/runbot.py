@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.management.base import BaseCommand
 
 from bot.models import TgUser
@@ -16,7 +18,6 @@ class Command(BaseCommand):
             res = tg_client.get_updates(offset=offset)
             for item in res.result:
                 offset = item.update_id + 1
-                print(item.message)
                 tg_user = TgUser.objects.filter(telegram_user_id=item.message.from_.id).first()
                 if tg_user:
                     if tg_user.user is None:
@@ -28,19 +29,32 @@ class Command(BaseCommand):
                     else:
                         text = "неизвестная команда"
                         if item.message.text == "/goals":
-                            #boards = Board.objects.filter(participants__user=tg_user.user)
-                            #categories = GoalCategory.objects.filter(board__in=boards)
-                            #goals = Goal.objects.filter(is_deleted=False, category__in=categories)
-                            goals = Goal.objects.filter(is_deleted=False, category__board__participants__user=tg_user.user)
-
+                            goals = Goal.objects.filter(is_deleted=False,
+                                                        category__board__participants__user=tg_user.user)
                             goals_list = [f"Goal {goal.id} - {goal.title}" for goal in goals]
                             text = "\n".join(goals_list)
-
+                        elif item.message.text == "/create":
+                            categories = GoalCategory.objects.filter(is_deleted=False,
+                                                                     board__participants__user=tg_user.user)
+                            categories_list = [cat.title for cat in categories]
+                            text = "\n".join(categories_list)
+                            tg_client.send_message(chat_id=item.message.chat.id, text="Выберите категорию\n " + text)
+                            res = tg_client.get_updates(offset=offset, timeout=30)
+                            offset += 1
+                            category = GoalCategory.objects.filter(title=res.result[0].message.text).first()
+                            if not category:
+                                text = "нет такой категории"
+                            else:
+                                tg_client.send_message(chat_id=item.message.chat.id, text="Выберите заголовок")
+                                res = tg_client.get_updates(offset=offset, timeout=30)
+                                offset += 1
+                                goal = Goal.objects.create(title=res.result[0].message.text, category=category,
+                                                    user=tg_user.user, due_date=datetime.date.today())
+                                text = f"Создана цель {goal.id} - {goal.title}"
                 else:
                     tg_client.new_verification_code()
                     TgUser.objects.create(telegram_user_id=item.message.from_.id, telegram_chat_id=item.message.chat.id,
                                           verification_code=tg_client.verification_code)
 
                     text = f"Приветствую! Код верификации: {tg_client.verification_code}"
-                data = tg_client.send_message(chat_id=item.message.chat.id, text=text)
-                print(data)
+                tg_client.send_message(chat_id=item.message.chat.id, text=text)
