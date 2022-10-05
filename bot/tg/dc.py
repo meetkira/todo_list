@@ -35,7 +35,7 @@ class Message:
     message_id: int
     from_: MessageFrom
     chat: Chat
-    text: str
+    text: Optional[str] = None
 
     class Meta:
         unknown = marshmallow.EXCLUDE

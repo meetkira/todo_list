@@ -1,7 +1,6 @@
 import json
 import random
 import string
-from typing import Optional
 
 import requests
 
@@ -21,10 +20,8 @@ class TgClient:
     def get_updates(self, offset: int = 0, timeout: int = 60) -> GetUpdatesResponse:
         try:
             request_url = self.get_url(method=f"getUpdates?offset={offset}&timeout={timeout}")
-            print(request_url)
             response = requests.get(url=request_url)
             json_response = json.loads(response.text)
-            print(json_response)
             for res in json_response["result"]:
                 res["message"]["from_"] = res["message"].pop("from")
 
