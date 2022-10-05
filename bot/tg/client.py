@@ -40,9 +40,3 @@ class TgClient:
             return data
         except Exception:
             raise NotImplementedError
-
-
-'''if __name__ == "__main__":
-    cl = TgClient("5630137267:AAEAa-1q952vsPtg_qneW41QJ0QYVIcbGmw")
-    print(cl.get_updates(offset=0, timeout=60))
-    print(cl.send_message(818206966, "hello"))'''

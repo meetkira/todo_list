@@ -8,9 +8,9 @@ import marshmallow_dataclass
 @dataclass
 class Chat:
     id: int
-    first_name: str
-    username: str
     type: str
+    first_name: Optional[str] = None
+    username: Optional[str] = None
     last_name: Optional[str] = None
     title: Optional[str] = None
 
@@ -22,8 +22,8 @@ class Chat:
 class MessageFrom:
     id: int
     is_bot: bool
-    first_name: str
-    username: str
+    first_name: Optional[str] = None
+    username: Optional[str] = None
     last_name: Optional[str] = None
 
     class Meta:
