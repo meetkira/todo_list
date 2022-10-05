@@ -36,7 +36,6 @@ services:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_HOST: $POSTGRES_HOST
-      SECRET_KEY: $SECRET_KEY
     command: python manage.py runbot
   migrations:
     image: meetkira/skypro_meetkira_todo_list:$GITHUB_REF_NAME-$GITHUB_RUN_ID
