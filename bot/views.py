@@ -9,9 +9,6 @@ from bot.tg.client import TgClient
 from todo_list.settings import TELEGRAM_TOKEN
 
 
-# Create your views here.
-
-
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def verify(request):

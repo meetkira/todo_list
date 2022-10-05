@@ -22,6 +22,7 @@ class TgClient:
             request_url = self.get_url(method=f"getUpdates?offset={offset}&timeout={timeout}")
             response = requests.get(url=request_url)
             json_response = json.loads(response.text)
+
             for res in json_response["result"]:
                 res["message"]["from_"] = res["message"].pop("from")
 

@@ -13,3 +13,7 @@ class TgUser(models.Model):
     telegram_user_id = models.IntegerField(verbose_name="ID телеграмма пользователя")
     user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.PROTECT, null=True, blank=True)
     verification_code = models.CharField(verbose_name="Код верификации", max_length=51)
+
+
+class TgProcessedUpdate(models.Model):
+    update_id = models.IntegerField(verbose_name="ID последнего обработанного сообщения")
