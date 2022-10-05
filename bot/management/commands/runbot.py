@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 from bot.models import TgUser
 from bot.tg.client import TgClient
-from goals.models import Goal, BoardParticipant, GoalCategory, Board
+from goals.models import Goal, GoalCategory
 from todo_list.settings import TELEGRAM_TOKEN
 
 
@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         offset = 0
         tg_client = TgClient(TELEGRAM_TOKEN)
+        print(TELEGRAM_TOKEN)
         while True:
             res = tg_client.get_updates(offset=offset)
             for item in res.result:
