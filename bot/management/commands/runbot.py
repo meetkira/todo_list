@@ -60,8 +60,6 @@ class Command(BaseCommand):
                                     tg_client.send_message(chat_id=item.message.chat.id, text="Выберите заголовок")
                                     last_update_id+=1
                                     res_goal_title = tg_client.get_updates(offset=last_update_id, timeout=30)
-                                    print("res_goal_title: ")
-                                    print(res_goal_title)
                                     goal = Goal.objects.create(title=res_goal_title.result[0].message.text,
                                                                category=category,
                                                                user=tg_user.user, due_date=datetime.date.today())
