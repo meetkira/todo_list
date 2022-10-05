@@ -1,6 +1,7 @@
 import json
 import random
 import string
+from typing import Optional
 
 import requests
 
@@ -12,7 +13,7 @@ class TgClient:
         self.token = token
 
     def new_verification_code(self):
-        self.verification_code = "".join(random.choices(string.ascii_letters+string.digits, k=50))
+        self.verification_code = "".join(random.choices(string.ascii_letters + string.digits, k=50))
 
     def get_url(self, method: str):
         return f"https://api.telegram.org/bot{self.token}/{method}"
@@ -20,6 +21,7 @@ class TgClient:
     def get_updates(self, offset: int = 0, timeout: int = 60) -> GetUpdatesResponse:
         try:
             request_url = self.get_url(method=f"getUpdates?offset={offset}&timeout={timeout}")
+            print(request_url)
             response = requests.get(url=request_url)
             json_response = json.loads(response.text)
             print(json_response)
@@ -28,8 +30,10 @@ class TgClient:
 
             data = GetUpdatesResponseSchema().load(json_response)
             return data
+
         except Exception:
             raise NotImplementedError
+
 
     def send_message(self, chat_id: int, text: str) -> SendMessageResponse:
         try:
@@ -41,3 +45,8 @@ class TgClient:
             return data
         except Exception:
             raise NotImplementedError
+
+if __name__ == "__main__":
+    cl = TgClient("5630137267:AAEAa-1q952vsPtg_qneW41QJ0QYVIcbGmw")
+    print(cl.get_updates(offset=0, timeout=60))
+    #print(cl.send_message(818206966, "hello"))
