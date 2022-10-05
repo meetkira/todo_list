@@ -57,4 +57,6 @@ class Command(BaseCommand):
                                           verification_code=tg_client.verification_code)
 
                     text = f"Приветствую! Код верификации: {tg_client.verification_code}"
+                if text is None:
+                    text = "ошибка"
                 tg_client.send_message(chat_id=item.message.chat.id, text=text)
