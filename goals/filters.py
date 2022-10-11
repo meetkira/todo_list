@@ -6,6 +6,7 @@ from rest_framework.filters import OrderingFilter
 
 
 class GoalCommentOrdering(OrderingFilter):
+    """Фильтр для комментариев к цели"""
     allowed_custom_filters = ['created', 'updated']
 
     def get_ordering(self, request, queryset, view):
@@ -22,6 +23,7 @@ class GoalCommentOrdering(OrderingFilter):
 
 
 class GoalOrdering(OrderingFilter):
+    """Фильтр для порядка расположения целей"""
     allowed_custom_filters = ['title', 'created', 'due_date', 'priority']
 
     def get_ordering(self, request, queryset, view):
@@ -38,6 +40,7 @@ class GoalOrdering(OrderingFilter):
 
 
 class GoalDateFilter(django_filters.rest_framework.FilterSet):
+    """Фильтр для выбора целей по полям"""
     class Meta:
         model = Goal
         fields = {

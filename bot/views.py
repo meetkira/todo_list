@@ -12,6 +12,7 @@ from todo_list.settings import TELEGRAM_TOKEN
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def verify(request):
+    """Верификация бота"""
     if request.method == 'PATCH':
         verification_code = request.data.get("verification_code")
         if not verification_code:

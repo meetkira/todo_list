@@ -7,6 +7,7 @@ from core.models import User
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    """Сериализатор для регистрации пользователя"""
     password_repeat = serializers.CharField(max_length=128, write_only=True)
     password = serializers.CharField(max_length=128, write_only=True, validators=[validate_password])
 
@@ -32,6 +33,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    """Сериализатор для получения информации о пользователе"""
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email',)
@@ -39,6 +41,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
+    """Сериализатор для смены пароля пользователя"""
     old_password = serializers.CharField(max_length=128, write_only=True)
     new_password = serializers.CharField(max_length=128, write_only=True)
 
@@ -61,6 +64,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
+    """Сериализатор для авторизации пользователя"""
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)
 

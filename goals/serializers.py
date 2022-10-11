@@ -8,6 +8,7 @@ from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipan
 
 # GoalCategory -----------------
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания категории"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     board = serializers.SlugRelatedField(
         queryset=Board.objects.all(),
@@ -21,6 +22,7 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):
+    """Сериализатор для получения информации о категории"""
     user = ProfileSerializer(read_only=True)
     board = serializers.SlugRelatedField(
         read_only=True,
@@ -35,6 +37,7 @@ class GoalCategorySerializer(serializers.ModelSerializer):
 
 # Goal -----------------
 class GoalCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания цели"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     def validate_category(self, value):
@@ -50,6 +53,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
 
 class GoalSerializer(serializers.ModelSerializer):
+    """Сериализатор для получения информации о цели"""
     user = ProfileSerializer(read_only=True)
     category = serializers.SlugRelatedField(
         required=False,
@@ -65,6 +69,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
 # GoalComment -----------------
 class GoalCommentCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания комментария"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     goal = serializers.SlugRelatedField(
         required=True,
@@ -79,6 +84,7 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
 
 
 class GoalCommentSerializer(serializers.ModelSerializer):
+    """Сериализатор для получения информации о комментарии"""
     user = ProfileSerializer(read_only=True)
     goal = GoalSerializer(read_only=True)
 
@@ -90,6 +96,7 @@ class GoalCommentSerializer(serializers.ModelSerializer):
 
 # Board -----------------
 class BoardCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания доски"""
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -107,6 +114,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
 
 
 class BoardParticipantSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания участника доски"""
     role = serializers.ChoiceField(
         required=True, choices=BoardParticipant.Role.choices
     )
@@ -121,12 +129,15 @@ class BoardParticipantSerializer(serializers.ModelSerializer):
 
 
 class BoardListSerializer(serializers.ModelSerializer):
+    """Сериализатор для получения списка досок"""
+
     class Meta:
         model = Board
         fields = "__all__"
 
 
 class BoardSerializer(serializers.ModelSerializer):
+    """Сериализатор для получения информации о доске"""
     participants = BoardParticipantSerializer(many=True)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 

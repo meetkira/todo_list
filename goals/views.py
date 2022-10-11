@@ -19,12 +19,14 @@ from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializ
 
 # GoalCategory -----------------
 class GoalCategoryCreateView(CreateAPIView):
+    """Создание категории"""
     model = GoalCategory
     permission_classes = [GoalCategoryPermissions]
     serializer_class = GoalCategoryCreateSerializer
 
 
 class GoalCategoryListView(ListAPIView):
+    """Получение списка категорий с поддержкой фильтрации и пангинации"""
     model = GoalCategory
     permission_classes = [IsAuthenticated]
     serializer_class = GoalCategorySerializer
@@ -56,6 +58,7 @@ class GoalCategoryListView(ListAPIView):
 
 
 class GoalCategoryView(RetrieveUpdateDestroyAPIView):
+    """Получение/обновление/удаление категории"""
     model = GoalCategory
     serializer_class = GoalCategorySerializer
     permission_classes = [GoalCategoryPermissions]
@@ -74,12 +77,14 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
 
 # Goal -----------------
 class GoalCreateView(CreateAPIView):
+    """Создание цели"""
     model = GoalCategory
     permission_classes = [GoalPermissions]
     serializer_class = GoalCreateSerializer
 
 
 class GoalListView(ListAPIView):
+    """Получение списка целей с поддержкой фильтрации и пангинации"""
     model = Goal
     permission_classes = [IsAuthenticated]
     serializer_class = GoalSerializer
@@ -98,6 +103,7 @@ class GoalListView(ListAPIView):
 
 
 class GoalView(RetrieveUpdateDestroyAPIView):
+    """Получение/обновление/удаление цели"""
     model = Goal
     serializer_class = GoalSerializer
     permission_classes = [GoalPermissions]
@@ -114,12 +120,14 @@ class GoalView(RetrieveUpdateDestroyAPIView):
 
 # GoalComment -----------------
 class GoalCommentCreateView(CreateAPIView):
+    """Создание комментария"""
     model = GoalComment
     permission_classes = [GoalCommentPermissions]
     serializer_class = GoalCommentCreateSerializer
 
 
 class GoalCommentListView(ListAPIView):
+    """Получение списка комментариев с поддержкой фильтрации и пангинации"""
     model = GoalComment
     permission_classes = [IsAuthenticated]
     serializer_class = GoalCommentSerializer
@@ -136,6 +144,7 @@ class GoalCommentListView(ListAPIView):
 
 
 class GoalCommentView(RetrieveUpdateDestroyAPIView):
+    """Получение/обновление/удаление комментария"""
     model = GoalComment
     serializer_class = GoalCommentSerializer
     permission_classes = [GoalCommentPermissions]
@@ -146,12 +155,14 @@ class GoalCommentView(RetrieveUpdateDestroyAPIView):
 
 # Board -----------------
 class BoardCreateView(CreateAPIView):
+    """Создание доски"""
     model = Board
     permission_classes = [IsAuthenticated]
     serializer_class = BoardCreateSerializer
 
 
 class BoardListView(ListAPIView):
+    """Получение списка досок с поддержкой фильтрации и пангинации"""
     model = Board
     permission_classes = [IsAuthenticated]
     serializer_class = BoardListSerializer
@@ -178,6 +189,7 @@ class BoardListView(ListAPIView):
 
 
 class BoardView(RetrieveUpdateDestroyAPIView):
+    """Получение/обновление/удаление доски"""
     model = Board
     permission_classes = [BoardPermissions]
     serializer_class = BoardSerializer

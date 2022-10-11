@@ -5,6 +5,7 @@ from core.models import User
 
 # Create your models here.
 class TgUser(models.Model):
+    """Модель пользователя бота"""
     class Meta:
         verbose_name = "Пользователь бота"
         verbose_name_plural = "Пользователи бота"
@@ -16,4 +17,5 @@ class TgUser(models.Model):
 
 
 class TgProcessedUpdate(models.Model):
+    """Модель для запоминания последнего обработанного сообщения"""
     update_id = models.IntegerField(verbose_name="ID последнего обработанного сообщения")

@@ -1,5 +1,4 @@
 from django.contrib.auth import logout, login
-from django.http import HttpResponse
 
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, \
     GenericAPIView
@@ -11,12 +10,14 @@ from core.serializers import UserRegistrationSerializer, ProfileSerializer, Chan
 
 
 class UserCreateView(CreateAPIView):
+    """Создание пользователя"""
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
 
 
 class ProfileView(RetrieveUpdateDestroyAPIView):
+    """Получение информации о пользователе/обновление данных пользователя/logout пользователя"""
     model = User
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
@@ -31,6 +32,7 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
 
 
 class ChangePasswordView(UpdateAPIView):
+    """Смена пароля пользователя"""
     model = User
     permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
@@ -41,6 +43,7 @@ class ChangePasswordView(UpdateAPIView):
 
 
 class LoginView(GenericAPIView):
+    """Авторизация пользователя"""
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
 
